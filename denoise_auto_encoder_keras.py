@@ -68,14 +68,13 @@ auto_encoder = Model(input_img, decoded)
 auto_encoder.compile(optimizer='sgd', loss='mean_squared_error')
 
 # 训练
-auto_encoder.fit(x_train_noisy, x_train,    #   输入输出
-                 epochs=100,                 #   迭代次数
-                 batch_size=128,        
+auto_encoder.fit(x_train_noisy, x_train,  # 输入输出
+                 epochs=100,  # 迭代次数
+                 batch_size=128,
                  shuffle=True,
-                 validation_data=(x_test_noisy, x_test))    #   验证集
+                 validation_data=(x_test_noisy, x_test))  # 验证集
 
-decoded_imgs = auto_encoder.predict(x_test_noisy)   #  测试集合输入查看器去噪之后输出。
-
+decoded_imgs = auto_encoder.predict(x_test_noisy)  # 测试集合输入查看器去噪之后输出。
 
 # 在测试集合中选加噪声图和去噪图中各选取十张绘图显示比对。
 n = 10
