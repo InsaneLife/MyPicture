@@ -6,10 +6,25 @@ attention由来已久，让它名声大噪的还是BERT，可以说NLP中，BERT
 # 起源
 
 [Show, Attend and Tell: Neural Image Caption Generation with Visual Attention](https://arxiv.org/pdf/1502.03044.pdf)
-文章是一个图像的描述生成，encoder利用CNN从图像中提取信息为L个D维的矩阵，作为decoder的输入。即
+文章是一个图像的描述生成，encoder利用CNN从图像中提取信息为L个D维的矩阵，作为decoder的输入。即:
+$$
+a_{i}, i=1,2, \ldots, L
+$$
 
 
-而decoder使用了lstm，认为L个D维向量可以构成一个序列（并非时间序列，而且空间上的序列），这里LSTM中每一步就有上一步的输出向量$Z_t$, 上一步的隐变量$h_{t-1}$, 上一步的输出$y_{t-1}$, 隐变量和输出是可知的，那么$z_t$
+而decoder使用了lstm，认为L个D维向量可以构成一个序列（并非时间序列，而且空间上的序列），这里LSTM中输出为上一步的隐变量$h_{t-1}$, 上一步的输出$y_{t-1}$和$Z_t$, 隐变量和输出是LSMT已有的，那么$Z_t$是什么东西，怎么获得的呢？
+
+这里作者提出了attention机制，机器自动学习获得attention权重后对向量加权求和，获得$Z_t$，很抽象，咱们直接上公式：
+$$
+e_{ti} = f_{att}(a_i, h_{i-1}) = act\_fuc( W^a \times a_i + W^h \times h_{i-1} + b ) \\
+\alpha_{t i}=\frac{\exp \left(e_{t i}\right)}{\sum_{k=1}^{L} \exp \left(e_{t k}\right)}
+$$
+这里的权重获得使用了感知机结构，act_fuc是激活函数，可以是sigmoid、relu等，那么$Z_t$计算为attention权重的加权求和：
+$$
+Z_t = \sum_{i=1}^L \alpha_{ti} * a_i
+$$
+
+
 # Scaled Dot-Product Attention
 
 > Transformer中attention御用方式。
