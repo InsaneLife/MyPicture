@@ -24,6 +24,9 @@ $$
 Z_t = \sum_{i=1}^L \alpha_{ti} * a_i
 $$
 
+本文还提出来hard/soft attention, 那么什么是hard attention呢？
+
+对于t时刻，其对于位置i的attention的权重记为$S_{ti}$，作者认为$S_{ti}$应该服从多元伯努利分布
 
 # Scaled Dot-Product Attention
 
@@ -46,3 +49,4 @@ $$
 - https://www.zhihu.com/question/68482809/answer/1574319286
 - https://zhuanlan.zhihu.com/p/47282410
 - https://www.jiqizhixin.com/articles/2018-06-11-16
+
