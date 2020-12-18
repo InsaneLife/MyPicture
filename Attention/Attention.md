@@ -26,7 +26,12 @@ $$
 
 本文还提出来hard/soft attention, 那么什么是hard attention呢？
 
-对于t时刻，其对于位置i的attention的权重记为$S_{ti}$，作者认为$S_{ti}$应该服从多元伯努利分布
+对于t时刻，其对于位置i的attention的权重记为$S_{ti}$，作者认为$S_{ti}$应该服从多元伯努利分布，即所有$s_{ti}, i=1,2,...L$中只有个为1，是一个one-hot向量，即：
+$$
+\begin{array}{l}p\left(s_{t, i}=1 \mid s_{j<t}, \mathbf{a}\right)=\alpha_{t, i} \\ \hat{\mathbf{z}}_{t}=\sum_{i} s_{t, i} \mathbf{a}_{i}\end{array}
+$$
+
+可以看到$\alpha_{t,i}$没有直接参与$\hat z_t$的计算，
 
 # Scaled Dot-Product Attention
 
