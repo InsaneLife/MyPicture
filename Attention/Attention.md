@@ -24,18 +24,32 @@ $$
 Z_t = \sum_{i=1}^L \alpha_{ti} * a_i
 $$
 
-本文还提出来hard/soft attention, 那么什么是hard attention呢？
+本文还提出来hard/soft attention.
+
+## 那么什么是hard attention呢？
 
 对于t时刻，其对于位置i的attention的权重记为$S_{ti}$，作者认为$S_{ti}$应该服从多元伯努利分布，即所有$s_{ti}, i=1,2,...L$中只有个为1，是一个one-hot向量，即：
 $$
 \begin{array}{l}p\left(s_{t, i}=1 \mid s_{j<t}, \mathbf{a}\right)=\alpha_{t, i} \\ \hat{\mathbf{z}}_{t}=\sum_{i} s_{t, i} \mathbf{a}_{i}\end{array}
 $$
 
-可以看到$\alpha_{t,i}$没有直接参与$\hat z_t$的计算，同时似乎没法求导，那怎么办呢？对，随机采样。
+可以看到$\alpha_{t,i}$没有直接参与$\hat z_t$的计算，损失函数当然是在条件a的情况下最大化正确y的概率，即$\log p(y|a)$，作者通过Jensen 不等式将目标函数定义为$\log p(y|a)$的一个下界，巧妙的将s加入到损失函数中：
+$$
+\begin{aligned} L_{s} &=\sum_{s} p(s \mid \mathbf{a}) \log p(\mathbf{y} \mid s, \mathbf{a}) \\ & \leq \log \sum_{s} p(s \mid \mathbf{a}) p(\mathbf{y} \mid s, \mathbf{a}) \\ &=\log p(\mathbf{y} \mid \mathbf{a}) \end{aligned}
+$$
+计算梯度：
+$$
+\begin{aligned} \frac{\partial L_{s}}{\partial W}=\sum_{s} p(s \mid \mathbf{a}) &\left[\frac{\partial \log p(\mathbf{y} \mid s, \mathbf{a})}{\partial W}+\right.\left.\log p(\mathbf{y} \mid s, \mathbf{a}) \frac{\partial \log p(s \mid \mathbf{a})}{\partial W}\right] \end{aligned}
+$$
 
 
+损失函数似乎没法求导，那怎么办呢？对，随机采样。利用蒙特卡洛方法对 s 进行抽样，我们做 N 次这样的抽样实验，记每次取到的序列是是$\tilde{s}^{n}$，其概率就是1/N，那么梯度结果：
+$$
+\begin{aligned} \frac{\partial L_{s}}{\partial W} \approx \frac{1}{N} \sum_{n=1}^{N}\left[\frac{\partial \log p\left(\mathbf{y} \mid \tilde{s}^{n}, \mathbf{a}\right)}{\partial W}+\right. \left.\log p\left(\mathbf{y} \mid \tilde{s}^{n}, \mathbf{a}\right) \frac{\partial \log p\left(\tilde{s}^{n} \mid \mathbf{a}\right)}{\partial W}\right] \end{aligned}
+$$
 
 
+## soft attention
 
 相对而言soft attention就容易理解，相比于one-hot, sotf即全部位置都会有加入，区别在于权重的大小，此时：
 $$
