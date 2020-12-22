@@ -16,12 +16,12 @@ def perceptron_attention(input_emb, kv_emb, attn_hidden_size=None):
     """
     多层感知机的attention
     过滤出q中与kv相关的信息, 即 score(q, k) * q
-    q = input_emb : batch_size * nstep * hidden_size
+    q = input_emb : batch_size * seq_len * hidden_size
     k = v = kv_emb: batch_size * hidden_size
     score(q, k) = V * tanh(W * q + U * k)
     """
     q_shape = input_emb.shape
-    batch_size, nstep, q_hidden_size = q_shape[0].value, q_shape[1].value, q_shape[2].value
+    batch_size, seq_len, q_hidden_size = q_shape[0].value, q_shape[1].value, q_shape[2].value
     kv_hidden_size = kv_emb.shape[-1].value
 
     if not attn_hidden_size:
@@ -34,14 +34,14 @@ def perceptron_attention(input_emb, kv_emb, attn_hidden_size=None):
     attn_v = tf.get_variable(name="attn_v", shape=[attn_hidden_size, 1],
                                 initializer=tf.contrib.layers.xavier_initializer(), trainable=True)
 
-    # batch_size * nstep * attn_hidden_size
-    attn_emb_1 = tf.reshape(tf.matmul(tf.reshape(input_emb, [-1, q_hidden_size]), attn_w), [-1, nstep, attn_hidden_size])
+    # batch_size * seq_len * attn_hidden_size
+    attn_emb_1 = tf.reshape(tf.matmul(tf.reshape(input_emb, [-1, q_hidden_size]), attn_w), [-1, seq_len, attn_hidden_size])
     # batch_size * 1 * attn_hidden_size
     attn_emb_2 = tf.expand_dims(tf.matmul(kv_emb, attn_u), 1)
-    # batch_size * nstep * attn_hidden_size
+    # batch_size * seq_len * attn_hidden_size
     attn_emb = tf.tanh(tf.add(attn_emb_1, attn_emb_2))
-    # batch_size * nstep * 1
-    attn_logits = tf.reshape(tf.matmul(tf.reshape(attn_emb, [-1, attn_hidden_size]), attn_v), [-1, nstep, 1])
+    # batch_size * seq_len * 1
+    attn_logits = tf.reshape(tf.matmul(tf.reshape(attn_emb, [-1, attn_hidden_size]), attn_v), [-1, seq_len, 1])
     attn_weights = tf.nn.softmax(attn_emb, 1)
 
     word_outputs = tf.multiply(input_emb, attn_weights)
@@ -53,16 +53,16 @@ def scaled_dot_prod_attention(input_emb, kv_emb):
     """
     缩放点积注意力
     score(q, k) * v, 使用v中的信息更新q中的信息
-    q = input_emb:  batch_size * nstep_q * hidden_size
-    k = v = kv_emb: batch_size * nstep_k * hidden_size
+    q = input_emb:  batch_size * seq_len_q * hidden_size
+    k = v = kv_emb: batch_size * seq_len_k * hidden_size
     """
-    # batch_size * nstep_q * nstep_k
+    # batch_size * seq_len_q * seq_len_k
     dot_prod = tf.matmul(input_emb, kv_emb, transpose_b=True)
     dims = tf.cast(tf.shape(input_emb)[-1], tf.float32)
     scaled_attn_logits = dot_prod / tf.sqrt(dims)
     attn_weights = tf.nn.softmax(scaled_attn_logits, -1)
 
-    # batch_size * nstep_q * hidden_size
+    # batch_size * seq_len_q * hidden_size
     word_outputs = tf.matmul(attn_weights, kv_emb)
     sen_output = tf.reduce_sum(word_outputs, axis=1)
 
