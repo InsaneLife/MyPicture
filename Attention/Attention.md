@@ -1,6 +1,6 @@
 # 不讲5德的attention到底是啥?
 
-attention由来已久，让它名声大噪的还是BERT，可以说NLP中，BERT之后，再无RNN和CNN。那么attention到底有哪些呢？hard attention、soft attention、global attention、local attention、self-attention, 啊，这些都是啥
+attention由来已久，让它名声大噪的还是BERT，可以说NLP中，BERT之后，再无RNN和CNN。那么attention到底有哪些呢？hard attention、soft attention、global attention、local attention、self-attention, 啊，这些都是啥？相似度计算的dot、general、concat都是怎么计算的？
 
 
 # 起源
