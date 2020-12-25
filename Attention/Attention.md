@@ -81,6 +81,7 @@ V=X \times W^v
 $$
 
 
+
 # Reference
 
 - https://www.zhihu.com/question/68482809/answer/1574319286
