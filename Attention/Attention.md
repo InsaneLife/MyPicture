@@ -65,6 +65,12 @@ $$
 
 > 这个“被”字有点绕，举例i=1时候$\alpha_{11}$表示$a_1$对于$a_1$的权重，$\alpha_{21}$表示$a_1$对于$a_2$的权重，以此类推，$\alpha_{L1}$表示$a_1$对于$a_L$的权重，$\sum_t^C \alpha_{ti}$=1，即要求$a_1, a_2,...a_L$在被attention的总和相等，保证每个部位被同样关注。
 
+那么什么又是global attention 和 local attention呢？
+
+在seq2seq的翻译中，
+
+> Effective Approaches to Attention-based Neural Machine Translation
+
 # Scaled Dot-Product Attention
 
 > Transformer中attention御用方式。
