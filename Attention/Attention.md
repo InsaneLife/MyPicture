@@ -67,9 +67,17 @@ $$
 
 那么什么又是global attention 和 local attention呢？
 
-在seq2seq的翻译中，
+是否是说有些部分的attention并不用关注于全局的信息，只需要关注部分的信息就好了， 那么是否可以有attention只关注一部分位置上的输出呢？
 
 > Effective Approaches to Attention-based Neural Machine Translation
+
+在seq2seq的翻译中，优化的目标函数为
+$$
+J_{t}=\sum_{(x, y) \in \mathbb{D}}-\log p(y \mid x)
+$$
+
+
+总结下来local attention关注部分position，而global attention关注全局的position。
 
 # Scaled Dot-Product Attention
 
