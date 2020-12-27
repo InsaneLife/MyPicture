@@ -76,6 +76,7 @@ $$
 J_{t}=\sum_{(x, y) \in \mathbb{D}}-\log p(y \mid x)
 $$
 
+其中，x表示输入的句子序列，y表示目标语言的序列，其中
 
 总结下来local attention关注部分position，而global attention关注全局的position。
 
