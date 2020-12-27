@@ -66,10 +66,17 @@ $$
 > 这个“被”字有点绕，举例i=1时候$\alpha_{11}$表示$a_1$对于$a_1$的权重，$\alpha_{21}$表示$a_1$对于$a_2$的权重，以此类推，$\alpha_{L1}$表示$a_1$对于$a_L$的权重，$\sum_t^C \alpha_{ti}$=1，即要求$a_1, a_2,...a_L$在被attention的总和相等，保证每个部位被同样关注。
 
 那么什么又是global attention 和 local attention呢？
+# global attention 和 local attention
 
 是否是说有些部分的attention并不用关注于全局的信息，只需要关注部分的信息就好了， 那么是否可以有attention只关注一部分位置上的输出呢？
 
 > Effective Approaches to Attention-based Neural Machine Translation
+
+[Effective](https://arxiv.org/abs/1508.04025)提出了global attention 和 local attention概念，具体可以看图
+
+![image-20201227235505441](/Users/zhiyang.zzy/project/py3project/MyPicture/Attention/image-20201227235505441.png)![image-20201227235516850](/Users/zhiyang.zzy/project/py3project/MyPicture/Attention/image-20201227235516850.png)
+
+> 图中左边为全局attention，右边为local。蓝色块表示输入序列，红色块表示生成序列，可以看到，global在生成$c_t$时候回考虑全局
 
 在seq2seq的翻译中，优化的目标函数为
 $$
@@ -77,6 +84,8 @@ J_{t}=\sum_{(x, y) \in \mathbb{D}}-\log p(y \mid x)
 $$
 
 其中，x表示输入的句子序列，y表示目标语言的序列，其中
+
+
 
 总结下来local attention关注部分position，而global attention关注全局的position。
 
