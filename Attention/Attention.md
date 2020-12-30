@@ -70,28 +70,53 @@ $$
 
 是否是说有些部分的attention并不用关注于全局的信息，只需要关注部分的信息就好了， 那么是否可以有attention只关注一部分位置上的输出呢？
 
-> Effective Approaches to Attention-based Neural Machine Translation
+> [Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025)
 
 [Effective](https://arxiv.org/abs/1508.04025)提出了global attention 和 local attention概念，具体可以看图
 
-![image-20201227235505441](/Users/zhiyang.zzy/project/py3project/MyPicture/Attention/image-20201227235505441.png)![image-20201227235516850](/Users/zhiyang.zzy/project/py3project/MyPicture/Attention/image-20201227235516850.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20201228003656741.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NoaW5lMTk5MzA4MjA=,size_16,color_FFFFFF,t_70)![在这里插入图片描述](https://img-blog.csdnimg.cn/20201228003705391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NoaW5lMTk5MzA4MjA=,size_16,color_FFFFFF,t_70)
 
-> 图中左边为全局attention，右边为local。蓝色块表示输入序列，红色块表示生成序列，可以看到，global在生成$c_t$时候回考虑全局
+> 图中左边为全局attention，右边为local。蓝色块表示输入序列，红色块表示生成序列，可以看到，global在生成$c_t$时候回考虑全局的输入，和正常attention无异。
+>
+> local attention会有一个窗口，在窗口中的输入才会被计算权重，可以认为其余都是0。这让我想到了卷积🤣
+>
+> 最终的会将二者的context向量和$h_t$ concat作为最终的输出。
 
-在seq2seq的翻译中，优化的目标函数为
+**global attention:** 对于global attention，其输入序列$\bar{h}_{s}, s=1,2, \ldots, n$, 对于输出序列$h_t$，和每个$\bar{h}_{s}$计算attention权重然后加权求和获得context向量, attention权重计算方式为：
 $$
-J_{t}=\sum_{(x, y) \in \mathbb{D}}-\log p(y \mid x)
+\alpha_t(s)=\frac{\exp \left(\operatorname{score}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right)\right)}{\sum_{s^{\prime}} \exp \left(\operatorname{score}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s^{\prime}}\right)\right)} \tag{7}
+$$
+那么其中的score是怎么计算的呢，作者总结了一下历史的attention的权重3种计算方式：
+$$
+\operatorname{score}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right)=\left\{\begin{array}{ll}\boldsymbol{h}_{t}^{\top} \overline{\boldsymbol{h}}_{s} & \text { dot } \\ \boldsymbol{h}_{t}^{\top} \boldsymbol{W}_{\boldsymbol{a}} \overline{\boldsymbol{h}}_{s} & \text { general } \\ \boldsymbol{v}_{a}^{\top} \tanh \left(\boldsymbol{W}_{\boldsymbol{a}}\left[\boldsymbol{h}_{t} ; \overline{\boldsymbol{h}}_{s}\right]\right) & \text { concat }\end{array}\right.
 $$
 
-其中，x表示输入的句子序列，y表示目标语言的序列，其中
+> 其实包括后面的transformer、bert等，都是遵循此范式，不过是score计算方式在dot基础上除以向量维度的0.5次方，为了消除维度对score的影响。
 
+**local attention:** 每次都计算全局的attention权重，计算开销会特别大，特别是输入序列很长的时候（例如一篇文档），所以提出了每次值关注一小部分position。那么怎么确定这一小部分呢？
 
+文中设定了一个context向量$c_t$只关注其窗口$[p_t-D, p_t+D]$内的haidden states，而$p_t$怎么来的呢，文中又定义了这么几种方式：
+
+- Monotonic alignment：$P_t=t$, 这显然不太合适翻译，除非是alignment的任务，例如序列标注任务，其标签和当前t强相关。
+- Predictive alignment：$p_{t}=S \cdot \operatorname{sigmoid}\left(\boldsymbol{v}_{p}^{\top} \tanh \left(\boldsymbol{W}_{\boldsymbol{p}} \boldsymbol{h}_{t}\right)\right)$, 通过计算获得，取决于输入$h_t$，即$h_t$ favor alignment points（不知道咋翻译，G点吧），所以monotonic肯定是alignment任务才合适。
+
+然后权重计算方式为：
+$$
+\boldsymbol{a}_{t}(s)=\operatorname{align}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right) \exp \left(-\frac{\left(s-p_{t}\right)^{2}}{2 \sigma^{2}}\right)
+$$
+
+> 可能细心的观众要问，align是什么东西？好吧，自己看公式7.
+
+可以看到，在普通的权重计算基础上，加入了一个距离的影响因子，距离越小，后面一项越大，说明此更倾向于中心位置到权重大，越远位置越边缘，甚至超过边缘就被裁掉（例如窗口外的就为0）
 
 总结下来local attention关注部分position，而global attention关注全局的position。
 
 # Scaled Dot-Product Attention
 
 > Transformer中attention御用方式。
+>
+> [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
+> [Weighted Transformer Network for Machine Translation](https://arxiv.org/abs/1711.02132)
 
 不讲5德，直接上公式，
 $$
@@ -104,11 +129,18 @@ K=X \times W^k  \\
 V=X \times W^v
 $$
 
+可以看到，和之前attention计算方式差异并不大，分母多了一项$\sqrt{d_{k}}$是为了消除维度对于attention的影响。
 
+代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
 
 # Reference
 
+- [Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025)
+- [Show, Attend and Tell: Neural Image Caption Generation with Visual Attention](https://arxiv.org/pdf/1502.03044.pdf)
+- [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
+- [Weighted Transformer Network for Machine Translation](https://arxiv.org/abs/1711.02132)
 - https://www.zhihu.com/question/68482809/answer/1574319286
 - https://zhuanlan.zhihu.com/p/47282410
 - https://www.jiqizhixin.com/articles/2018-06-11-16
+- https://github.com/JayParks/transformer
 
