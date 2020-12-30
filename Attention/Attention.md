@@ -113,23 +113,27 @@ $$
 
 # Scaled Dot-Product Attention
 
-> Transformer中attention御用方式。
+> Transformer中attention御用方式。用Transformer完全替代了RNN结构。
 >
 > [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
 > [Weighted Transformer Network for Machine Translation](https://arxiv.org/abs/1711.02132)
 
 不讲5德，直接上公式，
 $$
-\text {Attention}(Q, K, V)=\operatorname{softmax}\left(\frac{Q K^{T}}{\sqrt{d_{k}}}\right) V
+\text {Attention}(Q, K, V)=\operatorname{softmax}\left(\frac{Q K^{T}}{\sqrt{d_{k}}}\right) V \\ = \operatorname{softmax}\left(\left[\begin{array}{c}v_{1} \\ v_{2} \\ \cdots \\ v_{n}\end{array}\right] *\left[v_{1}^{T}, v_{2}^{T}, \ldots, v_{n}^{T}\right]\right) *\left[\begin{array}{c}v_{1} \\ v_{2} \\ \ldots \\ v_{n}\end{array}\right]
 $$
-其中，self attention中，Q,K,V来源于同一个输入X：
+其中，$v_i$表示每一步的token的向量，在self attention中，Q,K,V来源于同一个输入X：
 $$
-Q=X \times W^q  \\
-K=X \times W^k  \\
-V=X \times W^v
+Q_i=X_i \times W^q  \\
+K_i=X_i \times W^k  \\
+V_i=X_i \times W^v
 $$
 
 可以看到，和之前attention计算方式差异并不大，分母多了一项$\sqrt{d_{k}}$是为了消除维度对于attention的影响。
+
+同时还提出了多头机制（multi-head attention），有点类似于CNN中的卷积核数目。
+
+**multi-head attention**：由多个scaled dot-product attention组成，输出结果concat，注意这里因为是concat，所以设置隐层单元数目和头数时候要注意是否满足：head * hidden_number = 
 
 代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
 
