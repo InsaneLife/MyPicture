@@ -133,7 +133,7 @@ $$
 
 同时还提出了多头机制（multi-head attention），有点类似于CNN中的卷积核数目。
 
-**multi-head attention**：由多个scaled dot-product attention组成，输出结果concat
+**multi-head attention**：由多个scaled dot-product attention组成，输出结果concat，每一个attention都都有一套不同的权重矩阵$W_{i}^{Q}, W_{i}^{K}, W_{i}^{V}$, 会有不同的初始化值。
 $$
 \begin{aligned} \operatorname{MultiHead}(Q, K, V) &=\operatorname{Concat}\left(\operatorname{head}_{1}, \ldots, \mathrm{head}_{\mathrm{h}}\right) W^{O} \\ \text { where head }_{\mathrm{i}} &=\operatorname{Attention}\left(Q W_{i}^{Q}, K W_{i}^{K}, V W_{i}^{V}\right) \end{aligned}
 $$
