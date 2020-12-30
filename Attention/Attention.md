@@ -133,7 +133,12 @@ $$
 
 同时还提出了多头机制（multi-head attention），有点类似于CNN中的卷积核数目。
 
-**multi-head attention**：由多个scaled dot-product attention组成，输出结果concat，注意这里因为是concat，所以设置隐层单元数目和头数时候要注意是否满足：head * hidden_number = 
+**multi-head attention**：由多个scaled dot-product attention组成，输出结果concat
+$$
+\begin{aligned} \operatorname{MultiHead}(Q, K, V) &=\operatorname{Concat}\left(\operatorname{head}_{1}, \ldots, \mathrm{head}_{\mathrm{h}}\right) W^{O} \\ \text { where head }_{\mathrm{i}} &=\operatorname{Attention}\left(Q W_{i}^{Q}, K W_{i}^{K}, V W_{i}^{V}\right) \end{aligned}
+$$
+
+> 同时由于Transformer中设置了残差网络，设置隐层单元数目和头数时候要注意是否满足：num_attention_heads * attention_head_size = hidden_size
 
 代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
 
