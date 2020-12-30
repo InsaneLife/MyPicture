@@ -140,6 +140,8 @@ $$
 
 > 同时由于Transformer中设置了残差网络，设置隐层单元数目和头数时候要注意是否满足：num_attention_heads * attention_head_size = hidden_size
 
+同时还是用position-wise feed-forward networks、position encoding、layer normalization、residual connection等，继续填坑
+
 代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
 
 # Reference
