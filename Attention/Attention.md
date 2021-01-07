@@ -133,7 +133,7 @@ $$
 
 同时还提出了多头机制（multi-head attention），有点类似于CNN中的卷积核数目。
 
-![image-20210107233327919](/Users/zhiyang.zzy/project/py3project/MyPicture/Attention/image-20210107233327919.png)
+![image-20210107233327919](https://raw.githubusercontent.com/InsaneLife/MyPicture/master/Attention/image-20210107233327919.png)
 
 **multi-head attention**：由多个scaled dot-product attention组成，输出结果concat，每一个attention都都有一套不同的权重矩阵$W_{i}^{Q}, W_{i}^{K}, W_{i}^{V}$, 会有不同的初始化值。
 $$
