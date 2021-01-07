@@ -144,8 +144,6 @@ $$
 
 同时还是用position-wise feed-forward networks、position encoding、layer normalization、residual connection等，继续填坑，后续也有一些对transformer的改造，会继续更新。
 
-
-
 ## Position-wise Feed-Forward Networks
 
 个人感觉像是窗口为1的卷积，即对于同一层的每个token，会共享$W_1,W_2$，即共享FFN参数，这个两个线性转换之间包含一个ReLU激活函数。
@@ -167,7 +165,15 @@ $$
 
 但是看后续bert源码中仍然使用position embedding的方式，即每个position随机初始化一个向量，通过和模型一起训练来拟合最终的position向量。
 
-代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
+同时，encoder部分使用了残差网络和layer normalization，即每一层的输出都是
+$$
+\text { LayerNorm }(x+\text { Sublayer }(x))
+$$
+其中x表示输入，Sublayer表示本层的网络，所以必须要保证$x$和$\text { Sublayer }(x)$的输出维度是一样的。
+
+
+
+各类attention代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
 
 # Reference
 
