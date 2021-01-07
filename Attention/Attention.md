@@ -148,7 +148,11 @@ $$
 
 ## Position-wise Feed-Forward Networks
 
-
+个人感觉像是窗口为1的卷积，即对于同一层的每个token，会共享$W_1,W_2$，即共享FFN参数，这个两个线性转换之间包含一个ReLU激活函数。
+$$
+\operatorname{FFN}(x)=\max \left(0, x W_{1}+b_{1}\right) W_{2}+b_{2}
+$$
+感觉也是合理的，即每个token的共享FFN，不仅减少了参数量，特别是sequence比较长的时候，而且这个FFN其实是各个位置的token上的通用特征提取器。
 
 ## position encoding
 
