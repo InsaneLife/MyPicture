@@ -146,11 +146,13 @@ $$
 
 
 
+## Position-wise Feed-Forward Networks
+
 
 
 ## position encoding
 
-从attention的计算中可以看出，不同时序的序列计算attention的结果是一样的，导致Transformer会变成一个词袋模型，那么怎么引入序列的信息呢？所以这里就需要对position进行表示，加到原有的token向量上，让每个token中包含其在序列中的位置信息。
+从attention的计算中可以看出，不同时序的序列计算attention的结果是一样的，导致Transformer会变成一个词袋模型，那么怎么引入序列的信息呢？所以这里就需要对position进行表示，加到原有的token向量上，让每个token中包含位置信息，不同的token之间包含相对位置信息，那么怎么表示这种绝对和相对的位置信息呢？
 
 论文中position encoding使用了公式:
 $$
