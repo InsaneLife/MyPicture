@@ -133,6 +133,8 @@ $$
 
 同时还提出了多头机制（multi-head attention），有点类似于CNN中的卷积核数目。
 
+![image-20210107233327919](/Users/zhiyang.zzy/project/py3project/MyPicture/Attention/image-20210107233327919.png)
+
 **multi-head attention**：由多个scaled dot-product attention组成，输出结果concat，每一个attention都都有一套不同的权重矩阵$W_{i}^{Q}, W_{i}^{K}, W_{i}^{V}$, 会有不同的初始化值。
 $$
 \begin{aligned} \operatorname{MultiHead}(Q, K, V) &=\operatorname{Concat}\left(\operatorname{head}_{1}, \ldots, \mathrm{head}_{\mathrm{h}}\right) W^{O} \\ \text { where head }_{\mathrm{i}} &=\operatorname{Attention}\left(Q W_{i}^{Q}, K W_{i}^{K}, V W_{i}^{V}\right) \end{aligned}
@@ -141,6 +143,19 @@ $$
 > 同时由于Transformer中设置了残差网络，设置隐层单元数目和头数时候要注意是否满足：num_attention_heads * attention_head_size = hidden_size
 
 同时还是用position-wise feed-forward networks、position encoding、layer normalization、residual connection等，继续填坑
+
+## position encoding
+
+从attention的计算中可以看出，不同时序的序列计算attention的结果是一样的，导致Transformer会变成一个词袋模型，那么怎么引入序列的信息呢？所以这里就需要对position进行表示，加到原有的token向量上，让每个token中包含其在序列中的位置信息。
+
+论文中position encoding使用了公式:
+$$
+\begin{aligned} P E_{(p o s, 2 i)} &=\sin \left(p o s / 10000^{2 i / d_{\text {model }}}\right) \\ P E_{(p o s, 2 i+1)} &=\cos \left(\text { pos } / 10000^{2 i / d_{\text {model }}}\right) \end{aligned}
+$$
+
+> 并且论文试验了使用基于训练的position embedding方式，发现效果差别不大，而上面方式优势在于不需要训练，减少了计算量。
+
+但是看后续bert源码中仍然使用position embedding的方式，即每个position随机初始化一个向量，通过和模型一起训练来拟合最终的position向量。
 
 代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
 
