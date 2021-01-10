@@ -171,8 +171,6 @@ $$
 $$
 其中x表示输入，Sublayer表示本层的网络，所以必须要保证$x$和$\text { Sublayer }(x)$的输出维度是一样的。
 
-
-
 各类attention代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
 
 # Reference
