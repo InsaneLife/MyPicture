@@ -180,7 +180,7 @@ $$
 对于上文所提到的：
 
 - dot方式见函数：[scaled_dot_prod_attention](https://github.com/InsaneLife/MyPicture/blob/479133672cdf697116621f9880321fce57077f3e/Attention/attention.py#L62)
-- general: 
+- general: [general_attention](https://github.com/InsaneLife/MyPicture/blob/cf363c061fe11111025073a90872f913db1728be/Attention/attention.py#L81)
 - concat: [perceptron_attention](https://github.com/InsaneLife/MyPicture/blob/479133672cdf697116621f9880321fce57077f3e/Attention/attention.py#L22)
 
 各类attention详细代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
