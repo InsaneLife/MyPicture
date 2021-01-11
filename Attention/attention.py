@@ -78,6 +78,34 @@ def scaled_dot_prod_attention(input_emb, kv_emb):
 
     return word_outputs, sen_output, attn_weights
 
+def general_attention(input_emb, kv_emb, attn_hidden_size=None):
+    """
+    general attention
+    score(q, k) * v, 使用v中的信息更新q中的信息
+    q = input_emb:  batch_size * seq_len_q * hidden_size
+    k = v = kv_emb: batch_size * seq_len_k * hidden_size
+    score(q, k) = q * W * k)
+    """
+    q_shape = input_emb.shape
+    batch_size, seq_len, q_hidden_size = q_shape[0].value, q_shape[1].value, q_shape[2].value
+    if not attn_hidden_size:
+        attn_hidden_size = q_hidden_size
+
+    attn_w = tf.get_variable(name="attn_w", shape=[q_hidden_size, attn_hidden_size],
+                             initializer=tf.contrib.layers.xavier_initializer(), trainable=True)
+
+    # batch_size * seq_len * attn_hidden_size
+    attn_emb_1 = tf.reshape(tf.matmul(tf.reshape(
+        input_emb, [-1, q_hidden_size]), attn_w), [-1, seq_len, attn_hidden_size])
+
+    # batch_size * seq_len_q * seq_len_k
+    scaled_attn_logits = tf.matmul(attn_emb_1, kv_emb, transpose_b=True)
+    attn_weights = tf.nn.softmax(scaled_attn_logits, -1)
+    # batch_size * seq_len_q * hidden_size
+    word_outputs = tf.matmul(attn_weights, kv_emb)
+    sen_output = tf.reduce_sum(word_outputs, axis=1)
+
+    return word_outputs, sen_output, attn_weights
 
 def slot_attention(embeddings, reduce_axis):
     """

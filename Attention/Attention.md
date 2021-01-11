@@ -171,7 +171,20 @@ $$
 $$
 其中x表示输入，Sublayer表示本层的网络，所以必须要保证$x$和$\text { Sublayer }(x)$的输出维度是一样的。
 
-各类attention代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
+# 代码
+
+$$
+\operatorname{score}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right)=\left\{\begin{array}{ll}\boldsymbol{h}_{t}^{\top} \overline{\boldsymbol{h}}_{s} & \text { dot } \\ \boldsymbol{h}_{t}^{\top} \boldsymbol{W}_{\boldsymbol{a}} \overline{\boldsymbol{h}}_{s} & \text { general } \\ \boldsymbol{v}_{a}^{\top} \tanh \left(\boldsymbol{W}_{\boldsymbol{a}}\left[\boldsymbol{h}_{t} ; \overline{\boldsymbol{h}}_{s}\right]\right) & \text { concat }\end{array}\right.
+$$
+
+对于上文所提到的：
+
+- dot方式见函数：[scaled_dot_prod_attention](https://github.com/InsaneLife/MyPicture/blob/479133672cdf697116621f9880321fce57077f3e/Attention/attention.py#L62)
+- concat: [perceptron_attention](https://github.com/InsaneLife/MyPicture/blob/479133672cdf697116621f9880321fce57077f3e/Attention/attention.py#L22)
+
+各类attention详细代码见：[attention.py](https://github.com/InsaneLife/MyPicture/blob/master/Attention/attention.py)
+
+Transformer的代码可以参考[bert](https://github.com/InsaneLife/bert)源码
 
 # Reference
 
