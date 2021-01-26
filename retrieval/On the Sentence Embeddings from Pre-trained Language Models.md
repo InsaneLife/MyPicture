@@ -14,6 +14,8 @@ $$
 p(x \mid c)=\frac{\exp \mathbf{h}_{c}^{\top} \mathbf{w}_{x}}{\sum_{x^{\prime}} \exp \mathbf{h}_{c}^{\top} \mathbf{w}_{x^{\prime}}}
 $$
 
+
+
 [2017Breaking](http://www.researchgate.net/publication/321025432_Breaking_the_Softmax_Bottleneck_A_High-Rank_RNN_Language_Model)指出，对于一个充分训练的语言模型，$\mathbf{h}_{c}^{\top} \mathbf{w}_{x}$可以近似的表示为：
 $$
 \begin{aligned} \mathbf{h}_{c}^{\top} \mathbf{w}_{x} & \approx \log p^{*}(x \mid c)+\lambda_{c} \\ &=\operatorname{PMI}(x, c)+\log p(x)+\lambda_{c} \end{aligned} \\
