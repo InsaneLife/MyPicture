@@ -4,7 +4,7 @@
 
 1. query聚类：将query通过点击二部图计算距离，然后进行聚类，解决稀疏性问题。基于假设：如果两个query很相似，那么他们的点击URL分布也会很相似，所以通过query的点击url的分布来表示query。
 
-![image-20210201223844256](/Users/zhiyang.zzy/Library/Mobile Documents/com~apple~CloudDocs/经典论文/self-learning/image-20210201223844256.png)
+![image-20210201223844256](self-learning/image-20210201223844256.png)
 $$
 \overrightarrow{q_{i}}[j]=\left\{\begin{array}{ll}\text { norm }\left(w_{i j}\right) & \text { if edge } e_{i j} \text { exists; } \\ 0 & \text { otherwise }\end{array}\right.
 $$
