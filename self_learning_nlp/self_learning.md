@@ -4,7 +4,7 @@
 
 1. query聚类：将query通过点击二部图计算距离，然后进行聚类，解决稀疏性问题。基于假设：如果两个query很相似，那么他们的点击URL分布也会很相似，所以通过query的点击url的分布来表示query。
 
-![image.png](https://intranetproxy.alipay.com/skylark/lark/0/2020/png/51008/1600822550869-269e5d2c-cfb0-40de-acb1-19dc354b11f4.png)
+![image-20210201223844256](/Users/zhiyang.zzy/Library/Mobile Documents/com~apple~CloudDocs/经典论文/self-learning/image-20210201223844256.png)
 $$
 \overrightarrow{q_{i}}[j]=\left\{\begin{array}{ll}\text { norm }\left(w_{i j}\right) & \text { if edge } e_{i j} \text { exists; } \\ 0 & \text { otherwise }\end{array}\right.
 $$
@@ -14,6 +14,7 @@ $$
 > $$
 > \operatorname{norm}\left(w_{i j}\right)=\frac{w_{i j}}{\sqrt{\sum_{\forall e_{i k}} w_{i k}^{2}}}
 > $$
+> 
 
 聚类距离计算：
 $$
@@ -51,7 +52,6 @@ $$
 
 
 # query 改写
-
 ## Learning to Attend, Copy, and Generate for Session-Based Qery Suggestion
 
 > 假设：用户说的话未被理解正确，通常会换个说法再说一遍。
@@ -109,9 +109,20 @@ $$
 
 ![image-20210127185337179](self_learning.assets/image-20210127185337179.png)
 
-包含连个模型，一个缺陷检测模型（DIM），一个缺陷纠正模型(DCM)。
+对于输入query的日志：
 
-Defect Identification Model 
+- DIM模块检测是否存在缺陷，或者不满足用户。
+- 对于高置信度存在缺陷的query，通过DCM模型给其标注一个更优的SF。
+- 通过这些更正SF的query+原有训练数据 再来重新训练NLU模型，提升效果。
+
+### Model 
+
+DIM和DCM模型都是下图，输出包含三部分。1）query。2）SF，包含domain、intent、slot、得分等、3）一些手工提取的特征，
+
+- 对于DIM模型，预估的是是否存在缺陷。
+- 对于DMC会额外输入一个候选domain/intent的特征，预估的是是否当前候选domain/intent是一个正确的label
+
+![image-20210128100635316](self_learning.assets/image-20210128100635316.png)
 
 # 语言模型
 
