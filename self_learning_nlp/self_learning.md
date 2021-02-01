@@ -6,6 +6,7 @@
 
 ![image-20210201224537351](self_learning.assets/image-20210201224537351.png)
 
+
 $$
 \overrightarrow{q_{i}}[j]=\left\{\begin{array}{ll}\text { norm }\left(w_{i j}\right) & \text { if edge } e_{i j} \text { exists; } \\ 0 & \text { otherwise }\end{array}\right.
 $$
