@@ -2,15 +2,17 @@
 
 
 
-评价指标
+# 评价指标
 
-中英文语料
+F1/准召率
+
+# 方法
+
+![image-20210730144400406](/Users/baitrum/Library/Application Support/typora-user-images/image-20210730144400406.png)
 
 Sota:
 
 https://paperswithcode.com/area/natural-language-processing/named-entity-recognition-ner
-
-
 
 ner发展：画一个脑图
 - 基于词典和规则的方法
@@ -31,7 +33,7 @@ ner发展：画一个脑图
 	- 训练任务：全词or实体mask策略。学习策略：electra通过随机15%mask，通过generator预测mask的词语，Discriminator判别词语是否是被替换过的。
 	- 模型：position编码的优化（相对位置编码）。
 	- 损失函数、优化器：
-- 
+- MRC
 
 # 公开数据集
 
@@ -373,6 +375,48 @@ Conditional Random Field：同时对于slot filling任务使用了条件随机�
 上面实验表明，bert联合slot filling和intent classification相比于分别做两个任务也是有一定的提升，证明了两种任务的关联性。
 
 > 本文主要将bert应用于联合的slu任务，以期望提升模型泛化能力。通过实验证明此观点，但是感觉更多的贡献来源于BERT。
+
+## TNER
+
+文章分析了Transformer的注意力机制，发现其在方向性、相对位置、稀疏性方面不太适合NER任务。因此改进了Transformer的encdoer，更好地建模character级别的和词语级别的特征。通过引入方向感知、距离感知和un-scaled的attention，证明改造后的Transformer encoder也能够对NER任务显著提升。
+
+![image-20210429142737405](image-20210429142737405.png)
+
+embedding中加入了word embedding和character embedding，character embedding经过Transformer encoder之后，提取n-gram以及一些非连续的字符特征。
+
+**Direction- and Distance-Aware Attention**：
+
+作者先说明Transformer中的函数中position embedding中，计算self-attention包含了相对位置信息，但是是没有方向的，并且在经过W矩阵映射之后，相对位置信息这一特性也会消失。
+
+所以提出计算attention权值时，将词向量与位置向量分开计算：
+
+![image-20210429152337623](image-20210429152337623.png)
+
+通过上面公式，不仅加入了相对位置信息，还有了方向的信息。
+
+**Un-scaled Dot-Product Attention**
+
+去掉了attention计算中的scaled，即不除以$\sqrt{d_k}$
+
+## FLAT
+
+将Lattice结构和Transformer相结合，解决中文会因为分词引入额外的误差，并且能够利用并行化，提升推理速度。
+
+
+
+![image-20210429172946953](image-20210429172946953.png)
+
+
+
+**Converting Lattice into Flat Structure：**如上图，通过词典匹配到的潜在词语(Lattice)
+
+# MRC
+
+[A Unified MRC Framework for Named Entity Recognition](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1910.11476.pdf)
+
+将每个类型实体转化为问题，在query中寻找span片段作为实体。难点在于如何将实体类型构造为问题。
+
+![image-20210730144836381](/Users/baitrum/Library/Application Support/typora-user-images/image-20210730144836381.png)
 
 
 
