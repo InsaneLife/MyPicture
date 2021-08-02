@@ -8,32 +8,11 @@ F1/准召率
 
 # 方法
 
-![image-20210730144400406](/Users/baitrum/Library/Application Support/typora-user-images/image-20210730144400406.png)
+![image-20210802234515649](ner论文.assets/image-20210802234515649.png)
 
 Sota:
-
 https://paperswithcode.com/area/natural-language-processing/named-entity-recognition-ner
 
-ner发展：画一个脑图
-- 基于词典和规则的方法
-- 传统的机器学习中的 CRF
-- 引入语义编码器：CNN-CRF、RNN-CRF、更深的网络（stack-lstm）、空洞卷积、Lattice LSTM、胶囊网络
-- 语义特征：
-	- char-embedding、中文部首。
-	- n-gram特征。
-	- 分词信息引入：
-		- 联合分词任务学习。
-		- 分词信息作为输入。最简单的方法就是基于词的标注。也可以基于token，但是把分词的信息引入，通过外部词典，来做输入。
-- 联合多任务学习。
-	- 联合意图分类任务学习。同时将意图和ner之间的关系进行建模，例如slot-gated就是将意图信息经过门控机制提供给NER使用。
-	- 联合分词任务学习。
-- BiRNN+Attention机制
-- 预训练语言模型：ELMO、GPT、BERT、BERT优化
-	- 语料：对话数据训练语言模型，因为对话中包含asr错误、用户表达错误，导致和传统的文本分布不一致等问题。
-	- 训练任务：全词or实体mask策略。学习策略：electra通过随机15%mask，通过generator预测mask的词语，Discriminator判别词语是否是被替换过的。
-	- 模型：position编码的优化（相对位置编码）。
-	- 损失函数、优化器：
-- MRC
 
 # 公开数据集
 
@@ -56,9 +35,7 @@ http://ir.hit.edu.cn/smp2017-ecdt-task1
 https://github.com/AtmaHou/Task-Oriented-Dialogue-Dataset-Survey
 
 ## snips
-
 ## atis
-
 
 
 # BI-LSTM + CRF
@@ -69,7 +46,7 @@ BI-LSTM-CRF 模型可以有效地利用过去和未来的输入特征。借助 C
 
 > 对比了5种模型：LSTM、BI-LSTM、CRF、LSTM-CRF、BI-LSTM-CRF，LSTM: 通过输入门，遗忘门和输出门实现记忆单元，能够有效利用上文的输入特征。BI-LSTM：可以获取时间步的上下文输入特征。CRF: 使用功能句子级标签信息，精度高。
 
-![image-20191027170450682](2019ner论文.assets/image-20191027170450682.png)
+![image-20191027170450682](ner论文.assets/image-20191027170450682.png)
 
 此后一些方法改进。
 
