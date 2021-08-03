@@ -57,4 +57,4 @@ def forward_segment(query:str, dic:dict):
 
 if __name__ == '__main__':
     word_dic = {'北京大学': 'org', '算法工程师': 'post'}
-    
+    forward_segment('北京大学生前来应聘算法工程师岗位', word_dic)
