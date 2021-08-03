@@ -38,6 +38,17 @@ https://github.com/AtmaHou/Task-Oriented-Dialogue-Dataset-Survey
 ## atis
 
 
+
+# 基于词典和规则的方法
+
+## 基于词典
+
+### 正向最大匹配
+
+
+
+## 基于模板
+
 # BI-LSTM + CRF
 
 > [Bidirectional LSTM-CRF Models for Sequence Tagging](https://arxiv.org/abs/1508.01991v1)
