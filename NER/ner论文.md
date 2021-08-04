@@ -45,7 +45,7 @@ https://github.com/AtmaHou/Task-Oriented-Dialogue-Dataset-Survey
 
 ### 正向最大匹配
 
-
+参考：[ner_rule.py](https://github.com/InsaneLife/MyPicture/blob/master/NER/ner_rule.py)
 
 ## 基于模板
 
