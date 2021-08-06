@@ -1,6 +1,10 @@
 命名实体识别（NER, Named Entity Recognition），是指识别文本中具有特定意义的实体，主要包括人名、地名、机构名、专有名词等。
 
+todo:
 
+https://zhuanlan.zhihu.com/p/347457328
+
+https://www.huaweicloud.com/articles/cbbd37764180a7d1bf3fbe5fab0e799b.html
 
 # 评价指标
 
@@ -34,10 +38,9 @@ http://ir.hit.edu.cn/smp2017-ecdt-task1
 
 https://github.com/AtmaHou/Task-Oriented-Dialogue-Dataset-Survey
 
-## snips
-## atis
+## snips&atis
 
-
+英文nlu数据集，包含意图和实体，[下载](https://github.com/MiuLab/SlotGated-SLU/tree/master/data)
 
 # 基于词典和规则的方法
 
