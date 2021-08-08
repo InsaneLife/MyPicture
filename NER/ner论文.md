@@ -39,7 +39,6 @@ http://ir.hit.edu.cn/smp2017-ecdt-task1
 https://github.com/AtmaHou/Task-Oriented-Dialogue-Dataset-Survey
 
 ## snips&atis
-
 英文nlu数据集，包含意图和实体，[下载](https://github.com/MiuLab/SlotGated-SLU/tree/master/data)
 
 # 基于词典和规则的方法
@@ -472,3 +471,7 @@ Task Embedding
 
 
 - A Survey on Deep Learning for Named Entity Recognition
+
+数据集漏标问题，出了清理数据，
+
+有一篇论文，首先分析了漏标对于模型的影响，然后提出了一种模型的方案，来缓解这种问题，EMPIRICAL ANALYSIS OF UNLABELED ENTITY PROBLEM IN NAMED ENTITY RECOGNITION
